@@ -1,0 +1,20 @@
+# workspace (rebuilt by bin/mdr)
+/ref/
+/build/
+/out/
+/data/*
+!/data/recipes/
+!/data/audit/
+!/data/findings-notes.md
+/compositions/flat/data/
+/compositions/*/oled
+/compositions/*/.hyperframes/
+/site/modules.json
+/site/.vercel/
+/site/.env*
+mdr.config.json
+
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store

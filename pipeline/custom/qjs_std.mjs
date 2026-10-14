@@ -1,0 +1,16 @@
+export const loadFile = () => null;
+export const writeFile = () => {};
+const fakeFile = { puts() {}, printf() {}, close() {}, getline() { return null; }, readAsString() { return ""; }, flush() {}, write() {}, eof() { return true; }, seek() {}, tell() { return 0; } };
+export const open = () => null;
+export const popen = () => null;
+export const fdopen = () => null;
+export const getenv = () => undefined;
+export const exit = () => {};
+export const evalScript = () => undefined;
+export const parseExtJSON = (s) => JSON.parse(s);
+export const strerror = () => "";
+export const out = fakeFile, err = fakeFile, in_ = fakeFile;
+export const sprintf = (f, ...a) => f;
+export const urlGet = () => null;
+export const SEEK_SET = 0, SEEK_END = 2;
+export default { loadFile, writeFile, open, popen, fdopen, getenv, exit, evalScript, parseExtJSON, strerror, out, err, sprintf, urlGet, SEEK_SET, SEEK_END };

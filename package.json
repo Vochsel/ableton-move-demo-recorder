@@ -1,0 +1,15 @@
+{
+  "name": "ableton-move-demo-recorder",
+  "version": "0.1.0",
+  "description": "Record honest demo videos of Schwung modules for Ableton Move: real DSP, real screens, flat + 3D renders, fuzzing and audits.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": { "mdr": "bin/mdr" },
+  "scripts": {
+    "check": "bash scripts/check.sh",
+    "mdr": "node bin/mdr"
+  },
+  "engines": { "node": ">=20" },
+  "repository": { "type": "git", "url": "git+https://github.com/Vochsel/ableton-move-demo-recorder.git" },
+  "keywords": ["ableton", "move", "schwung", "demo", "video", "hyperframes", "audio", "fuzzing"]
+}

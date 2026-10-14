@@ -1,0 +1,84 @@
+{
+ "play": "single",
+ "notes": [
+  [
+   0,
+   2.5,
+   48,
+   100
+  ],
+  [
+   3,
+   2.5,
+   53,
+   100
+  ],
+  [
+   6,
+   2.5,
+   55,
+   100
+  ],
+  [
+   9,
+   2.5,
+   50,
+   100
+  ],
+  [
+   12,
+   2.5,
+   48,
+   100
+  ],
+  [
+   15,
+   2.5,
+   57,
+   100
+  ],
+  [
+   18,
+   2.5,
+   53,
+   100
+  ],
+  [
+   21,
+   2.5,
+   55,
+   100
+  ]
+ ],
+ "note": "Single root notes let the module build its chords; close filter so filter turns matter [audit]",
+ "pages": [
+  "Main",
+  "Filter"
+ ],
+ "turns": [
+  {
+   "key": "filter_cutoff",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "width",
+   "to": "40%",
+   "page": 0
+  },
+  {
+   "key": "filter_env_decay",
+   "to": "80%",
+   "page": 1
+  },
+  {
+   "key": "filter_resonance",
+   "to": "60%",
+   "page": 1
+  }
+ ],
+ "set": {
+  "filter_cutoff": "0.4",
+  "filter_env_depth": "0.6"
+ }
+}

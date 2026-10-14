@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Schwung Module Demos</title>
+  <meta name="description" content="Video demos of every Schwung module for Ableton Move — the real on-device UI, played through each module's own DSP." />
+  <style>
+    @font-face { font-family: "Plus Jakarta Sans"; font-weight: 400; font-display: swap; src: url("assets/plus-jakarta-sans-400.woff2") format("woff2"); }
+    @font-face { font-family: "Plus Jakarta Sans"; font-weight: 500; font-display: swap; src: url("assets/plus-jakarta-sans-500.woff2") format("woff2"); }
+    @font-face { font-family: "Plus Jakarta Sans"; font-weight: 700; font-display: swap; src: url("assets/plus-jakarta-sans-700.woff2") format("woff2"); }
+    @font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-display: swap; src: url("assets/ibm-plex-mono-400.woff2") format("woff2"); }
+    @font-face { font-family: "IBM Plex Mono"; font-weight: 600; font-display: swap; src: url("assets/ibm-plex-mono-600.woff2") format("woff2"); }
+    :root {
+      --bg: #0a0a0a; --card: #121314; --card-hover: #18191b; --line: #26272a;
+      --text: #f2f2f2; --muted: #8a8a8a; --dim: #5e5e5e; --accent: #e9eef3;
+      --sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    .wrap { max-width: 1440px; margin: 0 auto; padding: 0 32px; }
+    header { padding: 40px 0 8px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .brand img { width: 148px; height: 24px; image-rendering: pixelated; mix-blend-mode: screen; }
+    .brand span { font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border-left: 1px solid var(--line); padding-left: 14px; }
+    header nav a { font-family: var(--mono); font-size: 13px; color: var(--muted); text-decoration: none; letter-spacing: 0.04em; }
+    header nav a:hover { color: var(--text); }
+    .intro { padding: 56px 0 36px; max-width: 760px; }
+    .intro h1 { font-size: clamp(36px, 5vw, 60px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 700; }
+    .intro p { margin-top: 18px; font-size: 18px; line-height: 1.55; color: #bdbdbd; }
+    .controls { position: sticky; top: 0; z-index: 5; background: rgba(10,10,10,0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .controls .wrap { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding-top: 14px; padding-bottom: 14px; }
+    .chip { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 2px; padding: 7px 11px; cursor: pointer; }
+    .chip:hover { color: var(--text); border-color: #3a3b3e; }
+    .chip[aria-pressed="true"] { color: #0a0a0a; background: var(--accent); border-color: var(--accent); }
+    .search { margin-left: auto; font: 14px var(--sans); color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 2px; padding: 8px 12px; width: 220px; }
+    .search:focus { outline: none; border-color: #4a4b4e; }
+    .view { display: flex; gap: 0; }
+    .view .chip:first-child { border-radius: 2px 0 0 2px; } .view .chip:last-child { border-radius: 0 2px 2px 0; border-left: 0; }
+    .count { font-family: var(--mono); font-size: 12px; color: var(--dim); padding: 20px 0 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; padding: 16px 0 80px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; cursor: pointer; text-align: left; color: inherit; font: inherit; transition: background 0.15s, border-color 0.15s; }
+    .card:hover, .card:focus-visible { background: var(--card-hover); border-color: #34353a; outline: none; }
+    .thumb { position: relative; aspect-ratio: 16 / 9; background: #0e0f10; overflow: hidden; }
+    .thumb img, .thumb video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb video { opacity: 0; transition: opacity 0.2s; }
+    .card.playing .thumb video { opacity: 1; }
+    .meta { padding: 14px 16px 16px; }
+    .meta .type { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+    .meta h2 { margin-top: 6px; font-size: 20px; letter-spacing: -0.01em; font-weight: 700; }
+    .meta .by { margin-top: 3px; font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    /* player */
+    dialog { border: 0; padding: 0; background: transparent; max-width: min(1200px, 94vw); width: 100%; margin: auto; color: var(--text); }
+    dialog::backdrop { background: rgba(5,5,6,0.88); }
+    .player { background: var(--card); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    .player video { width: 100%; aspect-ratio: 16 / 9; display: block; background: #000; }
+    .pbar { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: flex-start; justify-content: space-between; padding: 18px 20px 20px; }
+    .pbar h3 { font-size: 26px; letter-spacing: -0.02em; }
+    .pbar .by { color: var(--muted); font-size: 14px; margin-top: 2px; }
+    .pbar p { color: #c4c4c4; font-size: 15px; line-height: 1.5; margin-top: 10px; max-width: 640px; }
+    .pbar .side { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+    .links { display: flex; gap: 14px; font-family: var(--mono); font-size: 12px; }
+    .links a { color: var(--muted); text-decoration: none; } .links a:hover { color: var(--text); }
+    .note { font-family: var(--mono); font-size: 11px; color: var(--dim); max-width: 420px; text-align: right; line-height: 1.5; }
+    .close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: rgba(10,10,10,0.7); color: var(--text); font-size: 18px; cursor: pointer; }
+    footer { border-top: 1px solid var(--line); padding: 28px 0 40px; font-family: var(--mono); font-size: 12px; color: var(--dim); }
+    footer a { color: var(--muted); }
+    @media (max-width: 640px) {
+      .wrap { padding: 0 16px; }
+      .search { width: 100%; margin-left: 0; }
+      .grid { grid-template-columns: 1fr; }
+      .brand span { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="https://schwung.dev" aria-label="Schwung"><img src="assets/logo-text.png" alt="Schwung" /><span>Module Demos</span></a>
+      <nav><a href="https://schwung.dev/catalog.html">Catalog ↗</a></nav>
+    </header>
+    <section class="intro">
+      <h1>Every module, on a Move.</h1>
+      <p>Each demo shows the module's real Schwung screen, drawn by Schwung's own display code, while the module's own DSP plays the notes and knob moves you see. Two cuts of each: the screen up close, and a 3D Move.</p>
+    </section>
+  </div>
+  <div class="controls">
+    <div class="wrap">
+      <div id="filters" role="group" aria-label="Filter by type"></div>
+      <div class="view" role="group" aria-label="Preview style">
+        <button class="chip" data-view="3d" aria-pressed="true">3D</button>
+        <button class="chip" data-view="flat" aria-pressed="false">Screen</button>
+      </div>
+      <input class="search" id="q" type="search" placeholder="Search modules" aria-label="Search modules" />
+    </div>
+  </div>
+  <main class="wrap">
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+  </main>
+  <div class="wrap"><footer>Videos generated from <a href="https://github.com/charlesvestal/schwung">Schwung</a>'s renderer and each module's released DSP. Modules that need samples, ROMs or a network stream play on stand-in instruments (OB-Xd + 8W8), noted in the player.</footer></div>
+
+  <dialog id="dlg">
+    <div class="player" style="position:relative">
+      <button class="close" id="close" aria-label="Close">×</button>
+      <video id="pv" playsinline loop controls></video>
+      <div class="pbar">
+        <div>
+          <div class="note" id="ptype"></div>
+          <h3 id="pname"></h3>
+          <div class="by" id="pby"></div>
+          <p id="pdesc"></p>
+        </div>
+        <div class="side">
+          <div class="view" role="group" aria-label="Cut">
+            <button class="chip" data-cut="3d" aria-pressed="true">3D</button>
+            <button class="chip" data-cut="flat" aria-pressed="false">Screen</button>
+          </div>
+          <div class="links"><a id="prepo" target="_blank" rel="noopener">GitHub ↗</a><a id="pdl" download>Download ↓</a></div>
+          <div class="note" id="paudio"></div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+  (async function () {
+    const TYPES = [["all", "All"], ["sound_generator", "Sound Generators"], ["audio_fx", "Audio FX"], ["midi_fx", "MIDI FX"], ["overtake", "Overtake"], ["tool", "Tools"]];
+    const mods = await (await fetch("modules.json")).json();
+    mods.sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
+    let type = "all", view = "3d", q = "", cur = null, cut = "3d";
+    const grid = document.getElementById("grid");
+
+    const filters = document.getElementById("filters");
+    for (const [k, label] of TYPES) {
+      if (k !== "all" && !mods.some((m) => m.type === k)) continue;
+      const b = document.createElement("button");
+      b.className = "chip"; b.textContent = label; b.dataset.type = k;
+      b.setAttribute("aria-pressed", String(k === type));
+      b.onclick = () => { type = k; filters.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); render(); };
+      filters.appendChild(b); filters.append(" ");
+    }
+    document.querySelectorAll("[data-view]").forEach((b) => b.onclick = () => {
+      view = b.dataset.view;
+      document.querySelectorAll("[data-view]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      render();
+    });
+    document.getElementById("q").oninput = (e) => { q = e.target.value.trim().toLowerCase(); render(); };
+
+    function render() {
+      const list = mods.filter((m) => (type === "all" || m.type === type) &&
+        (!q || (m.name + " " + m.author + " " + m.desc).toLowerCase().includes(q)));
+      document.getElementById("count").textContent = list.length + " module" + (list.length === 1 ? "" : "s");
+      grid.innerHTML = "";
+      for (const m of list) {
+        const c = document.createElement("button");
+        c.className = "card";
+        c.innerHTML = `<div class="thumb"><img loading="lazy" alt=""><video muted loop playsinline preload="none"></video></div>
+          <div class="meta"><div class="type"></div><h2></h2><div class="by"></div></div>`;
+        c.querySelector("img").src = view === "3d" ? m.poster3d : m.poster;
+        c.querySelector(".type").textContent = m.typeLabel;
+        c.querySelector("h2").textContent = m.name;
+        c.querySelector(".by").textContent = "by " + m.author;
+        const v = c.querySelector("video");
+        c.onmouseenter = () => { if (!v.src) v.src = view === "3d" ? m.video3d : m.flat; v.play().then(() => c.classList.add("playing")).catch(() => {}); };
+        c.onmouseleave = () => { v.pause(); c.classList.remove("playing"); };
+        c.onclick = () => open(m);
+        grid.appendChild(c);
+      }
+    }
+
+    const dlg = document.getElementById("dlg"), pv = document.getElementById("pv");
+    function setCut(k) {
+      cut = k;
+      document.querySelectorAll("[data-cut]").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.cut === k)));
+      const t = pv.currentTime || 0;
+      pv.poster = k === "3d" ? cur.poster3d : cur.poster;
+      pv.src = k === "3d" ? cur.video3d : cur.flat;
+      document.getElementById("pdl").href = pv.src;
+      pv.currentTime = t; pv.play().catch(() => {});
+    }
+    document.querySelectorAll("[data-cut]").forEach((b) => b.onclick = () => setCut(b.dataset.cut));
+    function open(m) {
+      cur = m;
+      document.getElementById("ptype").textContent = m.typeLabel.toUpperCase();
+      document.getElementById("pname").textContent = m.name;
+      document.getElementById("pby").textContent = "by " + m.author;
+      document.getElementById("pdesc").textContent = m.desc;
+      document.getElementById("prepo").href = "https://github.com/" + m.repo;
+      document.getElementById("paudio").textContent = (m.audio === "module" ? "Audio: the module's own DSP" : "Audio: stand-in instruments (OB-Xd + 8W8)") + (m.limit ? " — " + m.limit : "");
+      pv.currentTime = 0;
+      dlg.showModal();
+      setCut(view);
+    }
+    const shut = () => { pv.pause(); dlg.close(); };
+    document.getElementById("close").onclick = shut;
+    dlg.addEventListener("click", (e) => { if (e.target === dlg) shut(); });
+    dlg.addEventListener("close", () => pv.pause());
+    render();
+  })();
+  </script>
+</body>
+</html>

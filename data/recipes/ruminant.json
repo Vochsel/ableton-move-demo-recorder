@@ -1,0 +1,17 @@
+{
+ "note": "Frequency-shifting feedback delay on a groove: sweep Shift and Feedback.",
+ "play": "groove",
+ "turns": [
+  {
+   "key": "shift_hz",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "feedback",
+   "to": "75%",
+   "page": 0
+  }
+ ],
+ "locked": true
+}

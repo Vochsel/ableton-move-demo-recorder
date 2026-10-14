@@ -1,0 +1,7 @@
+- **mrdrums**: segfault in a 24 s render when `pad_decay_ms` is swept while eight pad samples are loaded and a beat plays. It doesn't reproduce in reduced form, so it may be a race. Its demo recipe avoids that knob.
+- **quilt**: the `canvas.js` widget never returns for some garbage values. Its drawing loops (`dots`/`dotted`: `for (x = x0; x <= x1; x += every)`) take their step from values, and a NaN or 0 step never terminates. On a Move that freezes the shadow UI.
+- **belt / belt-in / smack**: percent parameters render as `2000%` / `8300%` / `5900%`. They declare a 0–100 range with unit `%`, while Schwung's renderer formats `%` as a 0–1 fraction ×100.
+- **elusive-muse**: the Card canvas throws `Cannot read properties of undefined (reading 'deck')` until its value is read, so the cell is blank until then.
+- **scratch**: `load_status` stays 0 and output is silent even with `sample_file`, `virtual_play=1`, `jog_active=1` and `jog_gate=2`. What starts playback without the UI?
+- **sfz**: it finds and loads the mounted instrument (`Preset 0: Schwung Demo Keys`) but renders silence for notes 36–72.
+- **eucalypso**: in `hold` mode with held notes and MIDI clock it emits no notes. **slicer**: silent with `sample_path` set ("No slices found"). **dr32**: no kit loads headless, even with its bundled 9W9 samples mounted at `UserLibrary/Samples/DR32`.

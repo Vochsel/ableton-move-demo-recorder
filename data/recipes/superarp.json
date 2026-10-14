@@ -1,0 +1,30 @@
+{
+ "play": "held",
+ "note": "Stick to modifiers that audibly change the arp (drops, random octaves, rate, swing). [audit]",
+ "pages": [
+  "Main",
+  "Global"
+ ],
+ "turns": [
+  {
+   "key": "drop_amount",
+   "to": "50%",
+   "page": 0
+  },
+  {
+   "key": "random_octave_amount",
+   "to": "60%",
+   "page": 0
+  },
+  {
+   "key": "rate",
+   "to": 3,
+   "page": 1
+  },
+  {
+   "key": "swing",
+   "to": "60%",
+   "page": 1
+  }
+ ]
+}

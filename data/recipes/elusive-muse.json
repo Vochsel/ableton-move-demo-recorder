@@ -1,0 +1,7 @@
+{
+ "play": "groove",
+ "note": "needs a jog-click event at ~1 s (and ~7 s) to pull a prompt; no param drives it [audit]",
+ "pages": [
+  "Card"
+ ]
+}

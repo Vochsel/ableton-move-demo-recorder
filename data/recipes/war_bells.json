@@ -1,0 +1,29 @@
+{
+ "note": "Drop empty looper; show effect activity and space/mod [audit]",
+ "pages": [
+  "Main",
+  "Space FX"
+ ],
+ "turns": [
+  {
+   "key": "activity",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "space",
+   "to": "70%",
+   "page": 0
+  },
+  {
+   "key": "mod_depth",
+   "to": "70%",
+   "page": 1
+  },
+  {
+   "key": "sustain",
+   "to": "60%",
+   "page": 1
+  }
+ ]
+}

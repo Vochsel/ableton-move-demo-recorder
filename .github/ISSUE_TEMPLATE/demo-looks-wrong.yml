@@ -1,0 +1,19 @@
+name: A module's demo looks wrong
+description: The video doesn't show the module the way it really works
+labels: [demo]
+body:
+  - type: input
+    id: module
+    attributes: { label: Module id, placeholder: "e.g. pixel-walkers" }
+    validations: { required: true }
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What's wrong
+      description: Wrong screen, wrong notes, an inactive effect, misleading knob turns, silence…
+    validations: { required: true }
+  - type: textarea
+    id: right
+    attributes:
+      label: How should it be played and shown?
+      description: Module authors — this is the most useful part. What input does it want, which pages and knobs show it off, any setup (mode, sample, transport)? A recipe (docs/RECIPES.md) is even better, as a PR.

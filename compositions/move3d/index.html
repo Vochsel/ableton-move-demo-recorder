@@ -1,0 +1,232 @@
+<!doctype html>
+<html
+  lang="en"
+  data-composition-variables='[{"id":"moduleId","type":"string","label":"Module id","default":"obxd"},{"id":"name","type":"string","label":"Output name","default":"obxd"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="vendor/gsap/gsap.min.js"></script>
+    <script src="data/modules.js"></script>
+    <script src="lib/oled.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./vendor/three/build/three.module.js",
+          "three/addons/": "./vendor/three/examples/jsm/"
+        }
+      }
+    </script>
+    <style>
+      @font-face { font-family: "Plus Jakarta Sans"; font-weight: 500; src: url("assets/fonts/plus-jakarta-sans-500.woff2") format("woff2"); }
+      @font-face { font-family: "Plus Jakarta Sans"; font-weight: 700; src: url("assets/fonts/plus-jakarta-sans-700.woff2") format("woff2"); }
+      @font-face { font-family: "IBM Plex Mono"; font-weight: 600; src: url("assets/fonts/ibm-plex-mono-600.woff2") format("woff2"); }
+      @font-face { font-family: "IBM Plex Mono"; font-weight: 400; src: url("assets/fonts/ibm-plex-mono-400.woff2") format("woff2"); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #08090a; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #08090a; font-family: "Plus Jakarta Sans", sans-serif; color: #f2f2f2; }
+      .scene { position: absolute; inset: 0; }
+      #gl { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; }
+      #brand { position: absolute; left: 88px; top: 64px; width: 222px; height: 36px; image-rendering: pixelated; mix-blend-mode: screen; }
+      #crumb { position: absolute; right: 88px; top: 68px; font-family: "IBM Plex Mono", monospace; font-size: 22px; letter-spacing: 0.08em; color: #8a8a8a; text-transform: uppercase; }
+      #scrim { position: absolute; left: 0; bottom: 0; width: 1300px; height: 520px; background: radial-gradient(ellipse 900px 420px at 0% 100%, rgba(6,7,8,0.82) 0%, rgba(6,7,8,0.55) 45%, rgba(6,7,8,0) 100%); }
+      #lower { position: absolute; left: 88px; bottom: 84px; width: 1100px; }
+      #badge { display: inline-block; font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 19px; letter-spacing: 0.14em; text-transform: uppercase; color: #0a0a0a; background: #e9eef3; padding: 7px 13px; border-radius: 2px; }
+      #name { margin-top: 18px; font-weight: 700; font-size: 92px; line-height: 1; letter-spacing: -0.03em; text-shadow: 0 6px 30px rgba(0,0,0,0.6); }
+      #author { margin-top: 12px; font-size: 28px; font-weight: 500; color: #b4b4b4; text-shadow: 0 4px 18px rgba(0,0,0,0.7); max-width: 900px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      #fade { position: absolute; inset: 0; background: #08090a; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="move3d" data-start="0" data-duration="12" data-width="1920" data-height="1080">
+      <div id="scene" class="scene clip" data-start="0" data-duration="12" data-track-index="0">
+        <canvas id="gl" width="1920" height="1080"></canvas>
+        <img id="brand" src="assets/logo-text.png" alt="Schwung" />
+        <div id="crumb">Module Catalog</div>
+        <div id="scrim"></div>
+        <div id="lower">
+          <div id="badge-wrap"><span id="badge">Sound Generator</span></div>
+          <div id="name">OB-Xd</div>
+          <div id="author">by Charles Vestal</div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import * as THREE from "three";
+      import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+      import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+      import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+      import { GTAOPass } from "three/addons/postprocessing/GTAOPass.js";
+      import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+      import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+      import { buildMove, LAYOUT, H as TOPY } from "./lib/move3d.js";
+
+      const vars = (window.__hyperframes && window.__hyperframes.getVariables) ? window.__hyperframes.getVariables() : {};
+      const id = vars.moduleId || "obxd";
+      const M = (window.MODULES || {})[id] || { name: id, author: "", type: "" };
+      document.getElementById("badge").textContent = M.type;
+      document.getElementById("name").textContent = M.name;
+      document.getElementById("author").textContent = M.author ? "by " + M.author : "";
+      document.getElementById("crumb").textContent = "Module Catalog / " + M.type;
+
+      /* deterministic per-module hash */
+      let h = 2166136261;
+      for (const ch of id) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
+      const hrand = (n) => { let x = (h ^ Math.imul(n + 1, 2654435761)) >>> 0; x ^= x >>> 15; x = Math.imul(x, 2246822507) >>> 0; x ^= x >>> 13; return (x >>> 0) / 4294967296; };
+
+      async function build() {
+        const o = await OledLib.loadModule(id);
+
+        const canvas = document.getElementById("gl");
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+        /* 2x supersampling: a 3840x2160 drawing buffer shown at 1920x1080 */
+        const SS = 2;
+        renderer.setPixelRatio(SS);
+        renderer.setSize(1920, 1080, false);
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 0.9;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFShadowMap;
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0b0c0e);
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+        scene.environmentIntensity = 0.55;
+
+        /* the OLED texture source: 128x64 at 8 px per pixel */
+        const oc = document.createElement("canvas");
+        oc.width = 1024; oc.height = 512;
+        const octx = oc.getContext("2d");
+        const move = buildMove(oc);
+        scene.add(move.root);
+
+        /* floor */
+        const floor = new THREE.Mesh(new THREE.PlaneGeometry(400, 400),
+          new THREE.MeshStandardMaterial({ color: 0x0c0d0f, roughness: 0.95 }));
+        floor.rotation.x = -Math.PI / 2;
+        floor.receiveShadow = true;
+        scene.add(floor);
+
+        /* light */
+        scene.add(new THREE.HemisphereLight(0xc9d6ff, 0x1a1410, 0.35));
+        const key = new THREE.DirectionalLight(0xfff3e6, 2.2);
+        key.position.set(-14, 26, 16);
+        key.castShadow = true;
+        key.shadow.mapSize.set(4096, 4096);
+        key.shadow.camera.left = -24; key.shadow.camera.right = 24;
+        key.shadow.camera.top = 18; key.shadow.camera.bottom = -18;
+        key.shadow.radius = 6; key.shadow.bias = -0.0004;
+        scene.add(key);
+        const rim = new THREE.DirectionalLight(0x9fb8ff, 1.3);
+        rim.position.set(18, 10, -22);
+        scene.add(rim);
+        const spot = new THREE.SpotLight(0xffffff, 140, 80, 0.5, 0.8);
+        spot.position.set(0, 30, 6);
+        spot.target.position.set(0, 0, 0);
+        scene.add(spot, spot.target);
+
+        const camera = new THREE.PerspectiveCamera(30, 1920 / 1080, 0.1, 500);
+
+        const rt = new THREE.WebGLRenderTarget(1920 * SS, 1080 * SS, { samples: 4, type: THREE.HalfFloatType });
+        const composer = new EffectComposer(renderer, rt);
+        composer.setPixelRatio(SS);
+        composer.setSize(1920, 1080);
+        composer.addPass(new RenderPass(scene, camera));
+        /* subtle ambient occlusion: knobs and buttons sit into the surface instead of floating on it */
+        const ao = new GTAOPass(scene, camera, 1920 * SS, 1080 * SS);
+        ao.output = GTAOPass.OUTPUT.Default;
+        ao.blendIntensity = 0.75;
+        ao.updateGtaoMaterial({ radius: 0.45, distanceExponent: 1.4, thickness: 1.2, scale: 1.0, samples: 16, distanceFallOff: 1.0 });
+        ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 16 });
+        composer.addPass(ao);
+        const bloom = new UnrealBloomPass(new THREE.Vector2(1920, 1080), 0.22, 0.3, 0.93);
+        composer.addPass(bloom);
+        composer.addPass(new OutputPass());
+
+        /* ---------- camera: one closed spline ----------
+         * 0-5 s: close on the screen, drifting slowly sideways so the glass
+         * glare slides across it. Then out and around the device, and home to
+         * the same close-up — a closed curve, so the loop has no cut and no
+         * change of speed at the seam. */
+        const [dx, dz] = LAYOUT.display;
+        const S = (x, y, z) => new THREE.Vector3(dx + x, TOPY + y, dz + z);
+        const V = (x, y, z) => new THREE.Vector3(x, y, z);
+        const KEYS = [
+          { t: 0.0,  pos: S(-1.7, 5.0, 4.6), look: S(0.45, 0, 0.05) },
+          { t: 2.5,  pos: S(-0.4, 5.25, 4.75), look: S(0.55, 0, 0.05) },
+          { t: 5.0,  pos: S(0.95, 5.0, 4.6), look: S(0.7, 0, 0.05) },
+          { t: 7.1,  pos: V(20, 15.5, 21), look: V(0.5, 0.6, 0.6) },
+          { t: 9.2,  pos: V(-8, 21, 27), look: V(-1.5, 0.6, 0.4) },
+          { t: 10.8, pos: S(-4.2, 7.2, 6.8), look: S(0.2, 0, 0.05) },
+        ];
+        const posCurve = new THREE.CatmullRomCurve3(KEYS.map((k) => k.pos), true, "centripetal");
+        const lookCurve = new THREE.CatmullRomCurve3(KEYS.map((k) => k.look), true, "centripetal");
+        const KT = [...KEYS.map((k) => k.t), 12];
+        const look = new THREE.Vector3(), cpos = new THREE.Vector3();
+        let wide = 0;
+        function cameraAt(t) {
+          let i = 0;
+          while (i < KEYS.length - 1 && t >= KT[i + 1]) i++;
+          const u = (i + (t - KT[i]) / (KT[i + 1] - KT[i])) / KEYS.length;
+          posCurve.getPoint(u % 1, cpos);
+          lookCurve.getPoint(u % 1, look);
+          camera.position.copy(cpos);
+          camera.lookAt(look);
+          /* the glare band slides with the camera's sideways position over the screen */
+          move.glareTex.offset.x = THREE.MathUtils.clamp((cpos.x - dx) * 0.16 + (cpos.z - dz) * 0.02 - 0.1, -0.7, 0.7);
+          wide = Math.min(1, Math.max(0, (cpos.distanceTo(look) - 9) / 18));
+        }
+
+        /* ---------- per-frame state: everything from the module's score ---------- */
+        const tmp = new THREE.Color(), silicone = new THREE.Color(0x2c2d30);
+        const lower = document.getElementById("lower"), scrim = document.getElementById("scrim");
+        function renderAt(t) {
+          OledLib.drawCells(octx, o, t, 8, 1.2, 1);
+          move.oledTex.needsUpdate = true;
+
+          const ks = OledLib.knobState(o, t);
+          move.encoders.forEach((g, i) => { g.rotation.y = -ks.angle[i]; });
+          move.encoderLeds.forEach((m, i) => { m.material.color.setRGB(0.9, 0.94, 1).multiplyScalar(0.2 + ks.touched[i] * 2.2); });
+          move.jog.rotation.y = -ks.jog * (Math.PI / 12);
+
+          const ss = OledLib.stepState(o, t);
+          move.steps.forEach((m, s) => {
+            if (ss[s] >= 1) m.material.color.setRGB(1.6, 1.6, 1.7);                 // playhead: white
+            else m.material.color.setRGB(0.18, 0.48, 1.0).multiplyScalar(ss[s] * 2.4); // steps with notes: blue
+          });
+
+          const ps = OledLib.padState(o, t, M.ctype);
+          move.pads.forEach((p) => {
+            const st = ps[(3 - p.r) * 8 + p.c];
+            tmp.setRGB(st.rgb[0] / 255, st.rgb[1] / 255, st.rgb[2] / 255);
+            p.mat.emissive.copy(tmp);
+            /* frosted silicone: the light underneath carries the colour, hot in the middle */
+            p.mat.emissive.lerp(new THREE.Color(1, 1, 1), 0.12);
+            const lit = Math.max(0, st.level - 0.12) / 0.88;
+            p.mat.emissiveIntensity = st.level * 0.18 + lit * 1.9;
+          });
+
+          cameraAt(t);
+          const show = Math.min(1, Math.max(0, (wide - 0.55) / 0.3));
+          lower.style.opacity = show.toFixed(3);
+          lower.style.transform = "translateY(" + ((1 - show) * 16).toFixed(1) + "px)";
+          scrim.style.opacity = show.toFixed(3);
+          composer.render();
+        }
+
+        const tl = gsap.timeline({ paused: true });
+        const clock = { t: 0 };
+        tl.to(clock, { t: 12, duration: 12, ease: "none", onUpdate: () => renderAt(clock.t) }, 0);
+        window.__timelines["move3d"] = tl;
+        tl.seek(0);
+        renderAt(0);
+      }
+
+      window.__hf = window.__hf || {};
+      window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady["move3d-" + id] = build();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+{
+ "play": "mono",
+ "note": "Classic 101 bass moves: filter sweep with resonance, add sub/pulse, lengthen filter-env decay. [audit]",
+ "pages": [
+  "Main",
+  "Oscillator",
+  "Filter Envelope"
+ ],
+ "turns": [
+  {
+   "key": "cutoff",
+   "to": "20%",
+   "page": 0
+  },
+  {
+   "key": "resonance",
+   "to": "70%",
+   "page": 0
+  },
+  {
+   "key": "sub",
+   "to": "80%",
+   "page": 1
+  },
+  {
+   "key": "pulse",
+   "to": "70%",
+   "page": 1
+  },
+  {
+   "key": "f_decay",
+   "to": "60%",
+   "page": 2
+  }
+ ],
+ "set": {
+  "env_amt": "50%",
+  "cutoff": "45%"
+ }
+}

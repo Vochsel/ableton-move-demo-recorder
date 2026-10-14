@@ -1,0 +1,40 @@
+{
+ "note": "Turn params that act without the sequencer enabled [audit]",
+ "pages": [
+  "Main",
+  "Randomize",
+  "Presets"
+ ],
+ "turns": [
+  {
+   "key": "density",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "grain_size",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "rnd_grain",
+   "to": "70%",
+   "page": 1
+  },
+  {
+   "key": "rnd_time",
+   "to": "70%",
+   "page": 1
+  },
+  {
+   "key": "rev_mix",
+   "to": "60%",
+   "page": 2
+  },
+  {
+   "key": "master_filter",
+   "to": "20%",
+   "page": 2
+  }
+ ]
+}

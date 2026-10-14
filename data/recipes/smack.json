@@ -1,0 +1,22 @@
+{
+ "note": "Arm so the groove is captured, then show FX/order density reshuffling [audit]",
+ "pages": [
+  "Main",
+  "Perform"
+ ],
+ "turns": [
+  {
+   "key": "fx_density",
+   "to": "100%",
+   "page": 0
+  },
+  {
+   "key": "order_density",
+   "to": "60%",
+   "page": 1
+  }
+ ],
+ "set": {
+  "arm": "1"
+ }
+}

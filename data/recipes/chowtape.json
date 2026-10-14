@@ -1,0 +1,24 @@
+{
+ "note": "Show wow/flutter and degrade instead of output level [audit]",
+ "pages": [
+  "Main",
+  "Main - 2"
+ ],
+ "turns": [
+  {
+   "key": "drive",
+   "to": "95%",
+   "page": 0
+  },
+  {
+   "key": "flutter",
+   "to": "70%",
+   "page": 0
+  },
+  {
+   "key": "degrade",
+   "to": "70%",
+   "page": 1
+  }
+ ]
+}

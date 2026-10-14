@@ -1,0 +1,22 @@
+{
+ "play": "groove",
+ "note": "Start with Wand off-centre (echo side) and sweep it across to the reverb side; raise feedback. Key 'wand' inferred from the WAND label. [audit]",
+ "pages": [
+  "Main"
+ ],
+ "turns": [
+  {
+   "key": "wand",
+   "to": "85%",
+   "page": 0
+  },
+  {
+   "key": "feedback",
+   "to": "70%",
+   "page": 0
+  }
+ ],
+ "set": {
+  "wand": "30%"
+ }
+}

@@ -1,0 +1,14 @@
+name: Bug in the recorder
+description: The pipeline, host, compositions or CLI misbehave
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes: { label: What happened, description: "Command, output, and expected behaviour" }
+    validations: { required: true }
+  - type: textarea
+    id: doctor
+    attributes: { label: "`bin/mdr doctor` output", render: text }
+  - type: input
+    id: env
+    attributes: { label: Machine, placeholder: "e.g. M1 Pro, macOS 15, Docker 28" }

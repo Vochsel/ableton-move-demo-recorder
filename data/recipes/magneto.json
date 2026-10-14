@@ -1,0 +1,27 @@
+{
+ "note": "Record the groove onto side A first (Rec -> Stopped after ~2 bars closes the loop), then mangle [audit]",
+ "pages": [
+  "Main",
+  "Perform"
+ ],
+ "turns": [
+  {
+   "key": "varspeed",
+   "to": "90%",
+   "page": 0
+  },
+  {
+   "key": "scrub",
+   "to": "60%",
+   "page": 1
+  },
+  {
+   "key": "stutter",
+   "to": "60%",
+   "page": 1
+  }
+ ],
+ "set": {
+  "rec": "Rec"
+ }
+}

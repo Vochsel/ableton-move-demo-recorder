@@ -1,0 +1,29 @@
+{
+ "play": "poly",
+ "note": "Give vibrato and pitch-env non-zero depth so their rate/speed turns are heard; turn duty cycle for an obvious NES timbre change; skip GB-only wavetable. [audit]",
+ "pages": [
+  "Main",
+  "Parameters"
+ ],
+ "turns": [
+  {
+   "key": "duty",
+   "to": 0,
+   "page": 0
+  },
+  {
+   "key": "vibrato_rate",
+   "to": "70%",
+   "page": 0
+  },
+  {
+   "key": "pitch_env_speed",
+   "to": "60%",
+   "page": 1
+  }
+ ],
+ "set": {
+  "vibrato_depth": "60%",
+  "pitch_env_depth": "50%"
+ }
+}

@@ -1,0 +1,65 @@
+{
+ "note": "Each played note becomes a walker that falls and retriggers the note on landing. Short sparse plucks so the walkers have room; show the Pixel Walkers page.",
+ "play": "plucks",
+ "notes": [
+  [
+   0,
+   0.3,
+   60,
+   110
+  ],
+  [
+   3,
+   0.3,
+   67,
+   100
+  ],
+  [
+   6,
+   0.3,
+   64,
+   105
+  ],
+  [
+   10,
+   0.3,
+   72,
+   100
+  ],
+  [
+   13,
+   0.3,
+   62,
+   100
+  ],
+  [
+   17,
+   0.3,
+   69,
+   105
+  ],
+  [
+   20,
+   0.3,
+   65,
+   100
+  ]
+ ],
+ "pages": [
+  "Pixel Walkers",
+  "Main"
+ ],
+ "turns": [
+  {
+   "key": "bounce",
+   "to": "85%",
+   "page": 1
+  },
+  {
+   "key": "hardness",
+   "to": "90%",
+   "page": 1
+  }
+ ],
+ "locked": true
+}

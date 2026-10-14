@@ -1,0 +1,8 @@
+{
+ "note": "32-pad drum rack with its bundled 9W9 sample kit.",
+ "play": "drums",
+ "set": {
+  "kit": "0"
+ },
+ "locked": true
+}

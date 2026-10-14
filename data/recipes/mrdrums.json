@@ -1,0 +1,30 @@
+{
+ "note": "16-pad sample drums loaded with one-shots rendered from 8W8; a beat. (pad_decay_ms is avoided: sweeping it while all 8 pads are loaded segfaulted the DSP in a 24 s render \u2014 repro in build/findings.)",
+ "play": "drums",
+ "set": {
+  "p01_sample_path": "/data/UserData/UserLibrary/Samples/Schwung Demo/kick.wav",
+  "p02_sample_path": "/data/UserData/UserLibrary/Samples/Schwung Demo/rim.wav",
+  "p03_sample_path": "/data/UserData/UserLibrary/Samples/Schwung Demo/snare.wav",
+  "p04_sample_path": "/data/UserData/UserLibrary/Samples/Schwung Demo/clap.wav",
+  "p07_sample_path": "/data/UserData/UserLibrary/Samples/Schwung Demo/closed-hat.wav",
+  "p10_sample_path": "/data/UserData/UserLibrary/Samples/Schwung Demo/low-tom.wav",
+  "p11_sample_path": "/data/UserData/UserLibrary/Samples/Schwung Demo/open-hat.wav",
+  "p15_sample_path": "/data/UserData/UserLibrary/Samples/Schwung Demo/high-tom.wav"
+ },
+ "turns": [
+  {
+   "key": "pad_tune",
+   "to": "70%",
+   "page": 0
+  },
+  {
+   "key": "pad_start",
+   "to": "40%",
+   "page": 0
+  }
+ ],
+ "locked": true,
+ "pages": [
+  "Main"
+ ]
+}

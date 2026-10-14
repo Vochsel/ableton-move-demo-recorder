@@ -1,0 +1,32 @@
+{
+ "note": "Enable reverb send so decay is heard; skip level faders [audit]",
+ "pages": [
+  "FX",
+  "Attitude"
+ ],
+ "turns": [
+  {
+   "key": "reverb_decay",
+   "to": "90%",
+   "page": 0
+  },
+  {
+   "key": "all_decay",
+   "to": "60%",
+   "page": 0
+  },
+  {
+   "key": "tape_amount",
+   "to": "90%",
+   "page": 1
+  },
+  {
+   "key": "filter_cutoff",
+   "to": "30%",
+   "page": 1
+  }
+ ],
+ "set": {
+  "reverb_mix": "0.4"
+ }
+}

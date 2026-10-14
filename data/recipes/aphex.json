@@ -1,0 +1,24 @@
+{
+ "note": "Sweep the Korg-35 LPF with peak; detune VCO2 [audit]",
+ "pages": [
+  "Main",
+  "VCO 1+2"
+ ],
+ "turns": [
+  {
+   "key": "lpf_cut",
+   "to": "90%",
+   "page": 0
+  },
+  {
+   "key": "lpf_reso",
+   "to": "75%",
+   "page": 0
+  },
+  {
+   "key": "v2_fine",
+   "to": "30%",
+   "page": 1
+  }
+ ]
+}

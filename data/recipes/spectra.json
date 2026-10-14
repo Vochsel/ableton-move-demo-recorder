@@ -1,0 +1,35 @@
+{
+ "note": "Use chord_drift instead of zeroing the resonator count [audit]",
+ "pages": [
+  "Main",
+  "Control",
+  "Motion"
+ ],
+ "turns": [
+  {
+   "key": "decay",
+   "to": "95%",
+   "page": 0
+  },
+  {
+   "key": "brightness",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "lpf",
+   "to": "30%",
+   "page": 1
+  },
+  {
+   "key": "chord_drift",
+   "to": "70%",
+   "page": 1
+  },
+  {
+   "key": "motion_depth",
+   "to": "70%",
+   "page": 2
+  }
+ ]
+}

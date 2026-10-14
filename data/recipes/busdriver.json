@@ -1,0 +1,28 @@
+{
+ "play": "groove",
+ "note": "show glue/transients not level [audit]",
+ "pages": [
+  "Shape",
+  "Mix"
+ ],
+ "turns": [
+  {
+   "key": "drive",
+   "to": "70%",
+   "page": 0
+  },
+  {
+   "key": "transients",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "drywet",
+   "to": "50%",
+   "page": 1
+  }
+ ],
+ "set": {
+  "comp": "1"
+ }
+}

@@ -1,0 +1,25 @@
+{
+ "play": "poly",
+ "note": "replace transpose with FM brightness/bite [audit]",
+ "pages": [
+  "Main",
+  "Setup"
+ ],
+ "turns": [
+  {
+   "key": "bright",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "bite",
+   "to": "60%",
+   "page": 0
+  },
+  {
+   "key": "glide",
+   "to": "50%",
+   "page": 1
+  }
+ ]
+}

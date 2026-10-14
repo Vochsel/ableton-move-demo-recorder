@@ -1,0 +1,61 @@
+{
+ "play": "held",
+ "notes": [
+  [
+   0,
+   12,
+   60,
+   100
+  ],
+  [
+   0,
+   12,
+   64,
+   100
+  ],
+  [
+   0,
+   12,
+   67,
+   100
+  ],
+  [
+   12,
+   12,
+   57,
+   100
+  ],
+  [
+   12,
+   12,
+   60,
+   100
+  ],
+  [
+   12,
+   12,
+   64,
+   100
+  ]
+ ],
+ "note": "pick a groove and hold chords so it retriggers them [audit]",
+ "pages": [
+  "Main",
+  "Globals"
+ ],
+ "turns": [
+  {
+   "key": "gate",
+   "to": "30%",
+   "page": 1
+  },
+  {
+   "key": "strum",
+   "to": "60%",
+   "page": 1
+  }
+ ],
+ "set": {
+  "pattern": "12"
+ }
+}

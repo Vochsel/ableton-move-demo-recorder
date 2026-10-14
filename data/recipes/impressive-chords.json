@@ -1,0 +1,43 @@
+{
+ "note": "A chord generator: each trigger note (base 48 + 0..11) plays a whole chord preset. Feed single trigger notes; strum and tilt them.",
+ "play": "single",
+ "notes": [
+  [
+   0,
+   1.8,
+   48,
+   110
+  ],
+  [
+   2,
+   1.8,
+   53,
+   100
+  ],
+  [
+   4,
+   1.8,
+   51,
+   105
+  ],
+  [
+   6,
+   1.8,
+   55,
+   100
+  ]
+ ],
+ "turns": [
+  {
+   "key": "strum",
+   "to": "70%",
+   "page": 0
+  },
+  {
+   "key": "tilt",
+   "to": "80%",
+   "page": 0
+  }
+ ],
+ "locked": true
+}

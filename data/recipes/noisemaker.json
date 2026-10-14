@@ -1,0 +1,28 @@
+{
+ "play": "poly",
+ "note": "6 voices for chords, filter sweep is the obvious VA move [audit]",
+ "pages": [
+  "Main",
+  "Master"
+ ],
+ "turns": [
+  {
+   "key": "cutoff",
+   "to": "35%",
+   "page": 0
+  },
+  {
+   "key": "resonance",
+   "to": "70%",
+   "page": 0
+  },
+  {
+   "key": "detune",
+   "to": "60%",
+   "page": 1
+  }
+ ],
+ "set": {
+  "voices": "6"
+ }
+}

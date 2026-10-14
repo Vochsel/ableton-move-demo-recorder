@@ -1,0 +1,19 @@
+{
+ "play": "groove",
+ "note": "turn params the module UI actually displays [audit]",
+ "pages": [
+  "Params"
+ ],
+ "turns": [
+  {
+   "key": "step_amount",
+   "to": "40%",
+   "page": 0
+  },
+  {
+   "key": "length",
+   "to": "7",
+   "page": 0
+  }
+ ]
+}

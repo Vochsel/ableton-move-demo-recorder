@@ -1,0 +1,29 @@
+{
+ "play": "held",
+ "note": "Keep lanes enabled with non-zero velocity; turning pulses/rotation shows the Euclidean pattern changing. [audit]",
+ "pages": [
+  "Global",
+  "Lane 1"
+ ],
+ "turns": [
+  {
+   "key": "swing",
+   "to": "40%",
+   "page": 0
+  },
+  {
+   "key": "lane1_pulses",
+   "to": 7,
+   "page": 1
+  },
+  {
+   "key": "lane1_rotation",
+   "to": "40%",
+   "page": 1
+  }
+ ],
+ "set": {
+  "lane1_velocity": "100",
+  "lane2_enabled": "on"
+ }
+}

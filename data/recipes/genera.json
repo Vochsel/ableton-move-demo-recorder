@@ -1,0 +1,28 @@
+{
+ "play": "single",
+ "note": "Faster division and chord/stutter amounts show the generator doing something [audit]",
+ "pages": [
+  "Main",
+  "Genera"
+ ],
+ "turns": [
+  {
+   "key": "chord",
+   "to": "60%",
+   "page": 0
+  },
+  {
+   "key": "stutter",
+   "to": "50%",
+   "page": 0
+  },
+  {
+   "key": "gen_mode",
+   "to": 3,
+   "page": 1
+  }
+ ],
+ "set": {
+  "division": "1/16"
+ }
+}

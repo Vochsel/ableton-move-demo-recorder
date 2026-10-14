@@ -1,0 +1,30 @@
+{
+ "play": "held",
+ "notes": [
+  [
+   0,
+   4,
+   68,
+   110
+  ],
+  [
+   6,
+   4,
+   71,
+   110
+  ],
+  [
+   12,
+   4,
+   76,
+   110
+  ],
+  [
+   18,
+   4,
+   84,
+   110
+  ]
+ ],
+ "note": "Hold individual FX pads (Move pad notes 68-99) for 2 bars each so an FX is active and named on screen while the stand-in groove runs [audit]"
+}

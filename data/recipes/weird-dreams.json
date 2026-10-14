@@ -1,0 +1,29 @@
+{
+ "note": "Replace trigger-button turns with voice decay/cutoff and bus DJ filter/comp [audit]",
+ "pages": [
+  "Main",
+  "General"
+ ],
+ "turns": [
+  {
+   "key": "cv_decay",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "cv_cutoff",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "dj_filter",
+   "to": "20%",
+   "page": 1
+  },
+  {
+   "key": "comp",
+   "to": "70%",
+   "page": 1
+  }
+ ]
+}
