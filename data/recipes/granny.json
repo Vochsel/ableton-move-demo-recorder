@@ -1,0 +1,29 @@
+{
+ "note": "Granular instrument on a pad-chord sample (rendered from OB-Xd): chords with position and density moves.",
+ "play": "poly",
+ "set": {
+  "sample_path": "/data/UserData/UserLibrary/Samples/Schwung Demo/pad-chord.wav"
+ },
+ "turns": [
+  {
+   "key": "position",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "size_ms",
+   "to": "25%",
+   "page": 0
+  },
+  {
+   "key": "window_shape",
+   "to": "90%",
+   "page": 1
+  }
+ ],
+ "locked": true,
+ "pages": [
+  "Main",
+  "Window / Tone"
+ ]
+}

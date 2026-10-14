@@ -1,0 +1,29 @@
+{
+ "note": "Drop Sync page; show size + pitch shift and random pitch/reverse which are clearly audible [audit]",
+ "pages": [
+  "Main",
+  "Randomize"
+ ],
+ "turns": [
+  {
+   "key": "grain_size",
+   "to": "70%",
+   "page": 0
+  },
+  {
+   "key": "pitch",
+   "to": 2,
+   "page": 0
+  },
+  {
+   "key": "random_pitch",
+   "to": "60%",
+   "page": 1
+  },
+  {
+   "key": "reverse_prob",
+   "to": "50%",
+   "page": 1
+  }
+ ]
+}

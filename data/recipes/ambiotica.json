@@ -1,0 +1,29 @@
+{
+ "note": "Spend the time on Main texture knobs; Settings only for loop length [audit]",
+ "pages": [
+  "Main",
+  "Settings"
+ ],
+ "turns": [
+  {
+   "key": "grain_size",
+   "to": "90%",
+   "page": 0
+  },
+  {
+   "key": "decay",
+   "to": "100%",
+   "page": 0
+  },
+  {
+   "key": "scatter",
+   "to": "30%",
+   "page": 0
+  },
+  {
+   "key": "loop_length",
+   "to": "60%",
+   "page": 1
+  }
+ ]
+}

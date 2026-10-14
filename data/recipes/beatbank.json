@@ -1,0 +1,19 @@
+{
+ "play": "held",
+ "note": "select a pattern so it actually prints drums [audit]",
+ "pages": [
+  "Main",
+  "Globals"
+ ],
+ "turns": [
+  {
+   "key": "swing",
+   "to": "60%",
+   "page": 1
+  }
+ ],
+ "set": {
+  "pattern": "12",
+  "note_map": "gm"
+ }
+}

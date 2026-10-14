@@ -1,0 +1,154 @@
+#!/usr/bin/env node
+/**
+ * mdr — Move Demo Recorder.
+ *
+ * Records demo videos of Schwung modules for Ableton Move: the module's real DSP
+ * (in an ARM64 container) plays a score, its real screen is drawn from the DSP's
+ * own state, and two HyperFrames compositions (flat screen + 3D Move) render it.
+ *
+ *   mdr setup                       clone Schwung, build the DSP host image, write mdr.config.json
+ *   mdr doctor                      check tools, workspace and config
+ *   mdr catalog                     fetch catalog + releases, probe every DSP, build contracts
+ *   mdr samples                     render the sample library samplers use
+ *   mdr record <ids…|--all>         data + video for modules (local only)
+ *   mdr data <ids…|--all>           score + real-DSP audio + trace + screen films
+ *   mdr render <ids…|--all>         flat + 3D videos (add --publish to upload + deploy)
+ *   mdr publish                     manifest + gallery deploy + check (and repair) every upload
+ *   mdr recipe <id>                 what a recipe can use for a module (pages, keys, docs)
+ *   mdr sheets [ids…]               contact sheets of the screen films
+ *   mdr docs [ids…]                 README + help + recipe per module (build/audit/docs/)
+ *   mdr audit                       automated discrepancy checks
+ *   mdr fuzz [ids…] [--iters N]     random/extreme input at the real DSP
+ *   mdr fuzz-ui [ids…]              random/extreme values through every page renderer
+ *   mdr review-apply                merge visual-audit recipes (build/audit/review*.jsonl)
+ *   mdr findings                    write build/FINDINGS.md for module authors
+ */
+import fs from "node:fs";
+import path from "node:path";
+import { spawnSync, execSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+const HOME = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = process.env.MDR_ROOT || HOME;
+const CONFIG = path.join(ROOT, "mdr.config.json");
+const DEFAULTS = {
+    schwungRepo: "https://github.com/charlesvestal/schwung.git",
+    catalogUrl: "https://raw.githubusercontent.com/charlesvestal/schwung/main/module-catalog.json",
+    standins: { synth: "obxd", drums: "8w8" },
+    publish: { bucket: "", publicUrl: "", vercelScope: "" },
+};
+const cfg = () => ({ ...DEFAULTS, ...(fs.existsSync(CONFIG) ? JSON.parse(fs.readFileSync(CONFIG, "utf8")) : {}) });
+
+const [cmd, ...args] = process.argv.slice(2);
+const flag = (n) => args.includes(`--${n}`);
+const opt = (n, d) => { const i = args.indexOf(`--${n}`); return i >= 0 ? args[i + 1] : d; };
+const positional = args.filter((a, i) => !a.startsWith("--") && !(i > 0 && args[i - 1].startsWith("--") && ["iters"].includes(args[i - 1].slice(2))));
+
+function env() {
+    const c = cfg();
+    return {
+        ...process.env, MDR_ROOT: ROOT,
+        MDR_STANDIN_SYNTH: c.standins.synth, MDR_STANDIN_DRUMS: c.standins.drums,
+        MDR_BUCKET: c.publish.bucket || "", MDR_PUBLIC_URL: c.publish.publicUrl || "", MDR_VERCEL_SCOPE: c.publish.vercelScope || "",
+    };
+}
+function run(bin, argv, extraEnv = {}) {
+    console.error(`\x1b[2m$ ${bin} ${argv.join(" ")}\x1b[0m`);
+    const r = spawnSync(bin, argv, { cwd: ROOT, stdio: "inherit", env: { ...env(), ...extraEnv } });
+    if (r.status !== 0) { console.error(`\x1b[31m✗ ${bin} ${argv[0] || ""} exited ${r.status}\x1b[0m`); process.exit(r.status || 1); }
+}
+const py = (script, a = [], e) => run("python3", [path.join(HOME, "pipeline", script), ...a], e);
+const node = (script, a = [], e) => run(process.execPath, [path.join(HOME, "pipeline", script), ...a], e);
+const sh = (script, a = [], e) => run("bash", [path.join(HOME, "pipeline", script), ...a], e);
+const ids = () => {
+    if (flag("all") || !positional.length) {
+        const p = path.join(ROOT, "data", "contracts.json");
+        if (!fs.existsSync(p)) { console.error("no data/contracts.json — run `mdr catalog` first"); process.exit(1); }
+        return JSON.parse(fs.readFileSync(p, "utf8")).map((m) => m.id);
+    }
+    return positional;
+};
+const have = (bin) => spawnSync("sh", ["-c", `command -v ${bin}`]).status === 0;
+
+const commands = {
+    setup() {
+        if (!fs.existsSync(CONFIG)) fs.writeFileSync(CONFIG, JSON.stringify(DEFAULTS, null, 2) + "\n");
+        const ref = path.join(ROOT, "ref", "schwung");
+        if (!fs.existsSync(ref)) run("git", ["clone", "--depth", "1", cfg().schwungRepo, ref]);
+        else console.error("Schwung already at ref/schwung (git -C ref/schwung pull to update)");
+        run("docker", ["build", "-q", "-t", "schost", path.join(HOME, "pipeline", "host")]);
+        console.log("\nsetup done. Next: mdr catalog");
+    },
+    doctor() {
+        const rows = [
+            ["node ≥ 20", Number(process.versions.node.split(".")[0]) >= 20],
+            ["python3", have("python3")], ["ffmpeg", have("ffmpeg")], ["git", have("git")], ["gh (GitHub CLI, for repo lookups)", have("gh")],
+            ["docker daemon", spawnSync("docker", ["info"], { stdio: "ignore" }).status === 0],
+            ["docker image schost", spawnSync("docker", ["image", "inspect", "schost"], { stdio: "ignore" }).status === 0],
+            ["ARM64 docker (native, or emulation)", (() => { try { return /aarch64|arm64/.test(execSync("docker info --format '{{.Architecture}}'").toString()); } catch { return false; } })()],
+            ["ref/schwung", fs.existsSync(path.join(ROOT, "ref", "schwung", "src", "shared"))],
+            ["data/contracts.json", fs.existsSync(path.join(ROOT, "data", "contracts.json"))],
+            ["mdr.config.json", fs.existsSync(CONFIG)],
+            ["wrangler (for publish)", have("wrangler") || have("npx")], ["vercel (for publish)", have("vercel")],
+        ];
+        for (const [k, ok] of rows) console.log(`${ok ? "\x1b[32m✓" : "\x1b[33m·"}\x1b[0m ${k}`);
+    },
+    catalog() {
+        const c = cfg();
+        fs.mkdirSync(path.join(ROOT, "data"), { recursive: true });
+        run("curl", ["-sfL", c.catalogUrl, "-o", "data/module-catalog.json"]);
+        sh("fetch_module_json.sh");
+        py("fetch_releases.py");
+        py("map_dsp.py");
+        py("loadtest.py");
+        py("audio.py", ["contract", "--all"]);
+        py("extract_so_contracts.py");
+        py("build_contracts.py");
+        py("gen_modules_js.py");
+        console.log("\ncatalog ready. Next: mdr samples, then mdr record <ids>");
+    },
+    samples() { py("make_samplelib.py"); },
+    data() { sh("run_data.sh", ids()); },
+    render() { sh("render_all.sh", ids(), { MDR_PUBLISH: flag("publish") ? "1" : "0" }); if (flag("publish")) commands.publish(); },
+    record() {
+        sh("run_data.sh", ids());
+        sh("render_all.sh", ids(), { MDR_PUBLISH: "0" });
+        for (const i of ids()) console.log(`${i}\n  out/flat/schwung-${i}.mp4\n  out/3d/schwung-${i}-3d.mp4`);
+    },
+    publish() {
+        const c = cfg();
+        if (!c.publish.bucket || !c.publish.publicUrl) { console.error("set publish.bucket and publish.publicUrl in mdr.config.json"); process.exit(1); }
+        py("manifest.py", [c.publish.publicUrl]);
+        if (c.publish.vercelScope) run("vercel", ["deploy", "--prod", "--yes", "--scope", c.publish.vercelScope, "--cwd", path.join(ROOT, "site")]);
+        py("verify_publish.py");   // HEAD every file; re-upload what failed
+    },
+    recipe() {
+        const id = positional[0];
+        if (!id) { console.error("usage: mdr recipe <id>"); process.exit(1); }
+        const read = (p) => (fs.existsSync(p) ? fs.readFileSync(p, "utf8") : null);
+        const r = read(path.join(ROOT, "data", "recipes", `${id}.json`));
+        console.log(`== recipe (data/recipes/${id}.json)\n${r || "(none — generic performance)"}`);
+        node("demo.mjs", ["plan", id]);
+        const sc = read(path.join(ROOT, "build", "score", `${id}.json`));
+        if (sc) {
+            const s = JSON.parse(sc);
+            console.log(`\n== last score: play=${s.play} audio=${s.role} screen=${s.screen}`);
+            for (const g of s.segs || []) console.log(`  page "${g.name}" ${g.t0}-${g.t1}s turns: ${(g.turns || []).map((t) => `${t.key} ${t.from}->${t.to}`).join(", ") || "-"}`);
+        }
+        console.log(`\nkeys a recipe may use: build/plan/${id}.trace.txt  ·  docs: build/audit/docs/${id}.md (mdr docs ${id})  ·  schema: docs/RECIPES.md`);
+    },
+    sheets() { node("sheets.mjs", positional); },
+    docs() { py("gather_docs.py", positional); },
+    audit() { py("audit.py"); },
+    fuzz() { py("fuzz.py", [...positional, "--iters", opt("iters", "3")]); },
+    "fuzz-ui"() { node("fuzz_ui.mjs", positional); },
+    "review-apply"() { py("apply_review.py"); },
+    findings() { py("findings.py"); },
+};
+
+if (!cmd || cmd === "help" || cmd === "--help" || !commands[cmd]) {
+    const doc = fs.readFileSync(fileURLToPath(import.meta.url), "utf8").split("*/")[0].split("\n").slice(2).map((l) => l.replace(/^ \*\s?/, "")).join("\n");
+    console.log(doc.trim());
+    process.exit(cmd && !commands[cmd] ? 1 : 0);
+}
+commands[cmd]();

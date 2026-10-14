@@ -1,0 +1,29 @@
+{
+ "note": "Stick to slot amounts/macros [audit]",
+ "pages": [
+  "Main",
+  "FX 1&2"
+ ],
+ "turns": [
+  {
+   "key": "fx1_amount",
+   "to": "70%",
+   "page": 0
+  },
+  {
+   "key": "fx3_amount",
+   "to": "60%",
+   "page": 0
+  },
+  {
+   "key": "fx1_macro",
+   "to": "80%",
+   "page": 1
+  },
+  {
+   "key": "fx2_amount",
+   "to": "70%",
+   "page": 1
+  }
+ ]
+}

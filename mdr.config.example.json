@@ -1,0 +1,10 @@
+{
+  "schwungRepo": "https://github.com/charlesvestal/schwung.git",
+  "catalogUrl": "https://raw.githubusercontent.com/charlesvestal/schwung/main/module-catalog.json",
+  "standins": { "synth": "obxd", "drums": "8w8" },
+  "publish": {
+    "bucket": "",
+    "publicUrl": "",
+    "vercelScope": ""
+  }
+}

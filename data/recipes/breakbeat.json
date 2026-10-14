@@ -1,0 +1,42 @@
+{
+ "note": "Plays itself from MIDI clock: no notes. Show Complexity reshuffling the break, an anchor, and a retrigger amount.",
+ "play": "none",
+ "pages": [
+  "Main",
+  "Anchors",
+  "Retrig"
+ ],
+ "turns": [
+  {
+   "key": "complexity",
+   "to": "85%",
+   "page": 0
+  },
+  {
+   "key": "B_chance",
+   "to": "100%",
+   "page": 0
+  },
+  {
+   "key": "anchor_1",
+   "to": "100%",
+   "page": 1
+  },
+  {
+   "key": "anchor_5",
+   "to": "100%",
+   "page": 1
+  },
+  {
+   "key": "retrig_4x",
+   "to": "80%",
+   "page": 2
+  },
+  {
+   "key": "retrig_8x",
+   "to": "60%",
+   "page": 2
+  }
+ ],
+ "locked": true
+}

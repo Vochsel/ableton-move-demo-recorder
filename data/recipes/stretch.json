@@ -1,0 +1,4 @@
+{
+ "play": "single",
+ "note": "Load the same demo break WAV that waveform-editor uses before rendering, then the Target BPM/Pitch rows and Pad=Play preview show real stretching. [audit]"
+}

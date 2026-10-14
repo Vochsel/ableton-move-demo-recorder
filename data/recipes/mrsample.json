@@ -1,0 +1,17 @@
+{
+ "note": "Chromatic single-sample player on a keys sample (C3 root, rendered from OB-Xd).",
+ "play": "poly",
+ "set": {
+  "sample_path": "/data/UserData/UserLibrary/Samples/Schwung Demo/keys-C3.wav",
+  "root_note": "60",
+  "filter_cutoff": "0.35"
+ },
+ "locked": true,
+ "turns": [
+  {
+   "key": "filter_cutoff",
+   "to": "85%",
+   "page": 0
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "note": "Show tremolo and bark instead of tune [audit]",
+ "pages": [
+  "Main",
+  "Main - 2"
+ ],
+ "turns": [
+  {
+   "key": "tremolo",
+   "to": "90%",
+   "page": 0
+  },
+  {
+   "key": "bark",
+   "to": "90%",
+   "page": 0
+  },
+  {
+   "key": "speaker",
+   "to": "100%",
+   "page": 1
+  }
+ ]
+}

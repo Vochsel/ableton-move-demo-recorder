@@ -1,0 +1,8 @@
+{
+ "note": "SFZ player on an instrument rendered from OB-Xd (mounted into its instruments folder).",
+ "play": "poly",
+ "set": {
+  "preset": "0"
+ },
+ "locked": true
+}

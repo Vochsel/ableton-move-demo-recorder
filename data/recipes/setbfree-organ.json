@@ -1,0 +1,31 @@
+{
+ "play": "poly",
+ "note": "drawbars + leslie speed instead of volume [audit]",
+ "pages": [
+  "Drawbars",
+  "Output",
+  "Percussion"
+ ],
+ "turns": [
+  {
+   "key": "drawbar_3",
+   "to": "8",
+   "page": 0
+  },
+  {
+   "key": "drawbar_5",
+   "to": "6",
+   "page": 0
+  },
+  {
+   "key": "rotary",
+   "to": "1",
+   "page": 1
+  },
+  {
+   "key": "perc_harmonic",
+   "to": "0",
+   "page": 2
+  }
+ ]
+}

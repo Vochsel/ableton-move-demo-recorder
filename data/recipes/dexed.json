@@ -1,0 +1,30 @@
+{
+ "play": "poly",
+ "note": "Stay on pages with audible FM timbre changes (feedback, modulator levels); skip keyboard scaling. [audit]",
+ "pages": [
+  "Main",
+  "Operators"
+ ],
+ "turns": [
+  {
+   "key": "feedback",
+   "to": 7,
+   "page": 0
+  },
+  {
+   "key": "lfo_speed",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "op2_level",
+   "to": "40%",
+   "page": 1
+  },
+  {
+   "key": "op6_level",
+   "to": "95%",
+   "page": 1
+  }
+ ]
+}

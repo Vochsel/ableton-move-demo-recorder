@@ -1,0 +1,18 @@
+{
+ "note": "Morph the Grids map position and add randomness [audit]",
+ "pages": [
+  "Params"
+ ],
+ "turns": [
+  {
+   "key": "map_x",
+   "to": "90%",
+   "page": 0
+  },
+  {
+   "key": "randomness",
+   "to": "60%",
+   "page": 0
+  }
+ ]
+}

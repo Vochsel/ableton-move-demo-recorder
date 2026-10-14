@@ -1,0 +1,18 @@
+{
+ "play": "groove",
+ "note": "load Comb Filter + Voidspace Reverb on the input [audit]",
+ "pages": [
+  "Params"
+ ],
+ "turns": [
+  {
+   "key": "mix",
+   "to": "100%",
+   "page": 0
+  }
+ ],
+ "set": {
+  "machine1": "2",
+  "machine2": "18"
+ }
+}

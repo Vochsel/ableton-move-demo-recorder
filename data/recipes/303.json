@@ -1,0 +1,30 @@
+{
+ "note": "Classic acid filter sweep first [audit]",
+ "pages": [
+  "Main",
+  "Devilfish Mods",
+  "Drive"
+ ],
+ "turns": [
+  {
+   "key": "cutoff",
+   "to": "85%",
+   "page": 0
+  },
+  {
+   "key": "env_mod",
+   "to": "90%",
+   "page": 0
+  },
+  {
+   "key": "normal_decay",
+   "to": "100%",
+   "page": 1
+  },
+  {
+   "key": "drive",
+   "to": "60%",
+   "page": 2
+  }
+ ]
+}

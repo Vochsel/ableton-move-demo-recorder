@@ -1,0 +1,21 @@
+{
+ "play": "groove",
+ "note": "harness must trigger loop1_record..loop3_record at beat 0 and again at beat 4/6/8 so loops exist before phasing [audit]",
+ "pages": [
+  "Main",
+  "Shape",
+  "Loop"
+ ],
+ "turns": [
+  {
+   "key": "master_spread",
+   "to": "8",
+   "page": 1
+  },
+  {
+   "key": "end",
+   "to": "50%",
+   "page": 2
+  }
+ ]
+}

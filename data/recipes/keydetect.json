@@ -1,0 +1,10 @@
+{
+ "play": "poly",
+ "note": "Sustained chords with the shortest window so a key appears within the first couple of seconds and stays; no window turn. [audit]",
+ "pages": [
+  "Main"
+ ],
+ "set": {
+  "window": "0%"
+ }
+}

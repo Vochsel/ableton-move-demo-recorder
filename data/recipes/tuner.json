@@ -1,0 +1,30 @@
+{
+ "play": "single",
+ "notes": [
+  [
+   0,
+   5,
+   57,
+   100
+  ],
+  [
+   6,
+   5,
+   64,
+   100
+  ],
+  [
+   12,
+   5,
+   60,
+   100
+  ],
+  [
+   18,
+   5,
+   55,
+   100
+  ]
+ ],
+ "note": "Long single sustained notes (ideally a plain tone stand-in) so the YIN tuner locks and shows note/cents [audit]"
+}

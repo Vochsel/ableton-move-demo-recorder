@@ -1,0 +1,33 @@
+{
+ "note": "Enable the filter so the filter turns do something [audit]",
+ "pages": [
+  "Main",
+  "Filter",
+  "Stutter"
+ ],
+ "turns": [
+  {
+   "key": "cutoff",
+   "to": "50%",
+   "page": 1
+  },
+  {
+   "key": "resonance",
+   "to": "75%",
+   "page": 1
+  },
+  {
+   "key": "fil_env_depth",
+   "to": "70%",
+   "page": 0
+  },
+  {
+   "key": "stutter_on",
+   "to": 1,
+   "page": 2
+  }
+ ],
+ "set": {
+  "filter_on": "1"
+ }
+}

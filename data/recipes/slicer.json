@@ -1,0 +1,10 @@
+{
+ "note": "Transient slicer on a 2-bar break rendered from 8W8; pads play the slices.",
+ "play": "drums",
+ "set": {
+  "sample_path": "/data/UserData/UserLibrary/Samples/Schwung Demo/break-120bpm.wav",
+  "load_sample": "/data/UserData/UserLibrary/Samples/Schwung Demo/break-120bpm.wav",
+  "reload_sample": "1"
+ },
+ "locked": true
+}

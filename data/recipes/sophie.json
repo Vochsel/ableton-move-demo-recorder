@@ -1,0 +1,17 @@
+{
+ "note": "Sixteen-pad metallic FM percussion on notes 36-51: a beat, with Color and Metal turns.",
+ "play": "drums",
+ "turns": [
+  {
+   "key": "color",
+   "to": "80%",
+   "page": 0
+  },
+  {
+   "key": "metal",
+   "to": "85%",
+   "page": 0
+  }
+ ],
+ "locked": true
+}

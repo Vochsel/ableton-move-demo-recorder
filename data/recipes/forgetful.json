@@ -1,0 +1,23 @@
+{
+ "play": "groove",
+ "note": "harness must press master_record at beat 0 and again at beat 4 so loop A holds audio before turns [audit]",
+ "pages": [
+  "Main",
+  "Loop A"
+ ],
+ "turns": [
+  {
+   "key": "loopA_speed",
+   "to": "0.5x",
+   "page": 0
+  },
+  {
+   "key": "loopA_freq",
+   "to": "60%",
+   "page": 1
+  }
+ ],
+ "set": {
+  "input_routing": "A"
+ }
+}
