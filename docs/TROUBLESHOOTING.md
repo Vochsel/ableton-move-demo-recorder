@@ -22,3 +22,4 @@ Every trap from the catalog run, with its fix. Most are already handled in the p
 | a UI fuzz run never finishes | a widget loops forever on a garbage value | per-module process with a watchdog; the hang becomes a finding |
 | the gallery shows old videos | browser or CDN cache of the same URL | new object prefix (`v2/`) per re-render |
 | a 3D render of 30 MB+ per 12 s | supersampling + AO | `finalize.sh` re-encodes at CRF 20 (about 13 MB) |
+| a 3D render fails or is blank with "Failed to download CDN script" | three.js and GSAP were loaded from a CDN at render time | both are vendored in `compositions/flat/vendor/`; keep it that way |

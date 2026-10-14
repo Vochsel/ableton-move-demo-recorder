@@ -65,3 +65,7 @@ Both compositions take a `moduleId` variable and are batch-rendered by HyperFram
 - `fuzz_ui.mjs`: every page of every grid module with normal, extreme and garbage values, plus the module's widgets, with a 60 s watchdog per module. Flags renderer exceptions, hangs, off-screen drawing and missing glyphs.
 - `sheets.mjs` + the **audit-move-demos** skill: a visual review of each film against the module's README and help. Its recipes are merged by `apply_review.py`, which validates every key and page first.
 - `findings.py`: all of the above as a report for module authors.
+
+## Vendored libraries
+
+`compositions/flat/vendor/` contains [three.js](https://threejs.org) r181 (MIT, see `vendor/three/LICENSE`): only the core build and the addons the 3D composition imports. It also contains [GSAP](https://gsap.com) 3.14 (free under its standard licence). Both are vendored so renders never depend on a CDN; a network blip once failed 11 renders mid-run.
