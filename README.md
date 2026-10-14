@@ -103,6 +103,6 @@ Recipes, fixes and new checks are all welcome. See [CONTRIBUTING.md](CONTRIBUTIN
 
 ## Credits
 
-The screens come from [Schwung](https://github.com/charlesvestal/schwung) (MIT) and each module's own code. Every module belongs to its author. This tool downloads their public releases and runs them; it redistributes none of them. Fonts: Plus Jakarta Sans and IBM Plex Mono (OFL). Licensed under Apache-2.0.
+The screens come from [Schwung](https://github.com/charlesvestal/schwung) (MIT) and each module's own code. The host compiles against Schwung's plugin API headers, which are included unmodified with their licence (`pipeline/host/SCHWUNG_HEADERS.md`). Every module belongs to its author. This tool downloads their public releases and runs them; it redistributes none of them. Fonts: Plus Jakarta Sans and IBM Plex Mono (OFL). Licensed under Apache-2.0.
 
 This is a community project, not affiliated with or endorsed by Ableton. "Ableton" and "Move" are trademarks of Ableton AG.

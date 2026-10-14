@@ -146,9 +146,9 @@ const commands = {
     findings() { py("findings.py"); },
 };
 
-if (!cmd || cmd === "help" || cmd === "--help" || !commands[cmd]) {
+if (!cmd || ["help", "--help", "-h"].includes(cmd) || !commands[cmd]) {
     const doc = fs.readFileSync(fileURLToPath(import.meta.url), "utf8").split("*/")[0].split("\n").slice(2).map((l) => l.replace(/^ \*\s?/, "")).join("\n");
     console.log(doc.trim());
-    process.exit(cmd && !commands[cmd] ? 1 : 0);
+    process.exit(cmd && !["help", "--help", "-h"].includes(cmd) && !commands[cmd] ? 1 : 0);
 }
 commands[cmd]();
