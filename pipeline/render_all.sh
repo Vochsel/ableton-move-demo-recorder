@@ -13,9 +13,19 @@ export -f put; export BUCKET
 for ((b=0; b<${#ALL[@]}; b+=25)); do
   IDS=("${ALL[@]:b:25}")
   echo "== batch $((b/25+1)): ${IDS[*]}"
+  # never let a failed row fall back to an older render of the same module
+  for id in "${IDS[@]}"; do rm -f "out/raw-flat/$id.mp4" "out/raw-3d/$id.mp4"; done
   python3 -c "import json,sys; json.dump([{'moduleId':i,'name':i} for i in sys.argv[1:]], open('build/rows-r.json','w'))" "${IDS[@]}"
   (cd compositions/flat && npx hyperframes@0.8.155 render --batch $ROOT/build/rows-r.json --output "$ROOT/out/raw-flat/{name}.mp4" --quality high 2>&1 | grep -E "Batch complete|failed" )
   (cd compositions/move3d && npx hyperframes@0.8.155 render --batch $ROOT/build/rows-r.json --output "$ROOT/out/raw-3d/{name}.mp4" --quality high 2>&1 | grep -E "Batch complete|failed" )
+  # one retry for rows that failed (a renderer hiccup, a busy machine)
+  RETRY=(); for id in "${IDS[@]}"; do [ -f "out/raw-flat/$id.mp4" ] && [ -f "out/raw-3d/$id.mp4" ] || RETRY+=("$id"); done
+  if [ ${#RETRY[@]} -gt 0 ]; then
+    echo "  retrying: ${RETRY[*]}"
+    python3 -c "import json,sys; json.dump([{'moduleId':i,'name':i} for i in sys.argv[1:]], open('build/rows-r.json','w'))" "${RETRY[@]}"
+    (cd compositions/flat && npx hyperframes@0.8.155 render --batch $ROOT/build/rows-r.json --output "$ROOT/out/raw-flat/{name}.mp4" --quality high 2>&1 | grep -E "Batch complete|failed" )
+    (cd compositions/move3d && npx hyperframes@0.8.155 render --batch $ROOT/build/rows-r.json --output "$ROOT/out/raw-3d/{name}.mp4" --quality high 2>&1 | grep -E "Batch complete|failed" )
+  fi
   pipeline/finalize.sh "${IDS[@]}" > /dev/null
   mkdir -p out/posters
   for id in "${IDS[@]}"; do
